@@ -1,11 +1,11 @@
 const express = require("express");
 const app = express();
-require("dotenv").config(); // Make sure dotenv is loaded at the beginning
+require("dotenv").config(); 
 const PORT = process.env.PORT;
 const mongoose = require('mongoose');
 app.use(express.json());
 
-const { authRouter } = require("./src/routes/index");
+const { authRouter,userRouter } = require("./src/routes/index");
 
 mongoose.connect(process.env.CONNECTION_STRING)
   .then(() => {
@@ -21,3 +21,5 @@ mongoose.connect(process.env.CONNECTION_STRING)
   });
 
 app.use("/user/auth", authRouter);
+
+app.use ("/user/update",userRouter);
