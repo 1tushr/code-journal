@@ -29,4 +29,28 @@ async function handleUpdate(req, res) {
   }
 }
 
-module.exports = handleUpdate;
+async function handleDelete(req, res) {
+  try {
+    if (!req.body.email || !req.body.password) {
+      return res
+        .status(400)
+        .json({ error: "Bad request: Missing email or password" });
+    }
+
+    const userFound = await User.findOne({ email: req.body.email });
+
+    if (!userFound || !(await bcrypt.compare(req.body.password, userFound.password))) {
+      return res
+        .status(400)
+        .json({ error: "Email or password doesn't match" });
+    }
+
+    const deletedUser = await User.findOneAndDelete({ email: req.body.email });
+    res.json({ message: "User deleted successfully", user: deletedUser });
+  } catch (error) {
+    console.error("Error during user deletion:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+module.exports = { handleUpdate, handleDelete };
