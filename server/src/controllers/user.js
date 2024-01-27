@@ -1,3 +1,5 @@
+const Comment = require("../models/comments");
+const Post = require("../models/posts");
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const SALT_ROUNDS = 10;
@@ -39,18 +41,35 @@ async function handleDelete(req, res) {
 
     const userFound = await User.findOne({ email: req.body.email });
 
-    if (!userFound || !(await bcrypt.compare(req.body.password, userFound.password))) {
-      return res
-        .status(400)
-        .json({ error: "Email or password doesn't match" });
+    if (
+      !userFound ||
+      !(await bcrypt.compare(req.body.password, userFound.password))
+    ) {
+      return res.status(400).json({ error: "Email or password doesn't match" });
     }
-
+    await Comment.deleteMany({ user: userFound_id });
+    await Post.deleteMany({ user: userFound_id });
     const deletedUser = await User.findOneAndDelete({ email: req.body.email });
-    res.json({ message: "User deleted successfully", user: deletedUser });
+
+    res.json({
+      message: "User along with comments and posts successfully",
+      user: deletedUser,
+    });
   } catch (error) {
     console.error("Error during user deletion:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 }
 
-module.exports = { handleUpdate, handleDelete };
+async function handlePosts (req,res){
+  try {
+    const posts = await Post.find ({}).populate('author.id comments');
+    res.json({posts})
+  } catch (error) {
+    console.error("error in retrieving posts:", error);
+    res.status(500).json({error:"Interna server error "})
+  }
+} 
+
+
+module.exports = { handleUpdate, handleDelete,handlePosts };

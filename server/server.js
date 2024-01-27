@@ -20,9 +20,7 @@ mongoose.connect(process.env.CONNECTION_STRING)
     process.exit(1);
   });
 
-app.use("/user/auth", authRouter);
-
+app.use ("/user/auth", authRouter);
 app.use ("/user/update",userRouter);
-
-
-app.use ("/user/delete",userRouter)
+app.use ("/user/delete",userRouter);
+app.use ("/user/get")
