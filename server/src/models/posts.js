@@ -14,10 +14,25 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    username: {
-      type: String,
+    authorId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
+
+    username: {
+      type: String,
+      ref: "User",
+      required: true,
+    },
+
+    comments: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment",
+        required: false,
+      },
+    ],
   },
   { timestamps: true }
 );

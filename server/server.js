@@ -2,10 +2,11 @@ const express = require("express");
 const app = express();
 require("dotenv").config(); 
 const PORT = process.env.PORT;
+const cookieParser = require("cookie-parser");
 const mongoose = require('mongoose');
 app.use(express.json());
-
-const { authRouter,userRouter } = require("./src/routes/index");
+app.use(cookieParser());
+const { authRouter,userRouter,postRouter } = require("./src/routes/index");
 
 mongoose.connect(process.env.CONNECTION_STRING)
   .then(() => {
@@ -23,4 +24,4 @@ mongoose.connect(process.env.CONNECTION_STRING)
 app.use ("/user/auth", authRouter);
 app.use ("/user/update",userRouter);
 app.use ("/user/delete",userRouter);
-app.use ("/user/get")
+app.use ("/new/post",postRouter)

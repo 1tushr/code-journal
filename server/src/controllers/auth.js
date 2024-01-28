@@ -35,9 +35,19 @@ async function handleLogin(req, res) {
       return res.status(401).json({ message: "Incorrect password" });
     }
 
-    const token = jwt.sign({ id: matchUser._id }, process.env.SECRET_TOKEN, {
-      expiresIn: process.env.EXPIRY_TIME,
-    });
+    const token = jwt.sign(
+      {
+        user: {
+          id: matchUser._id,
+          username: matchUser.username,
+          email: matchUser.email,
+        },
+      },
+      process.env.SECRET_TOKEN,
+      {
+        expiresIn: process.env.EXPIRY_TIME,
+      }
+    );
 
     // Respond with success message and user details
     res
