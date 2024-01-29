@@ -10,30 +10,15 @@ author:{id: "1212362gdsu34g"},
 
 } */
 
-const handleBlogPost = require("../controllers/posts");
+const {handleBlogPost,handleBlogUpdate} = require("../controllers/posts");
 const isVerified = require("../middlewares/isVerified");
 
 const postRouter = require("express").Router();
 
 postRouter.post("/post-blog", isVerified, handleBlogPost);
+postRouter.put("/update-blog", isVerified, handleBlogUpdate);
 
 module.exports = postRouter;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //READ POST
 //CHECK IF LOGGEDIN

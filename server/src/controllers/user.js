@@ -61,15 +61,14 @@ async function handleDelete(req, res) {
   }
 }
 
-async function handlePosts (req,res){
+async function handlePosts(req, res) {
   try {
-    const posts = await Post.find ({}).populate('author.id comments');
-    res.json({posts})
+    const posts = await Post.find({}).populate("author.id comments");
+    res.json({ posts });
   } catch (error) {
     console.error("error in retrieving posts:", error);
-    res.status(500).json({error:"Interna server error "})
+    res.status(500).json({ error: "Interna server error " });
   }
-} 
+}
 
-
-module.exports = { handleUpdate, handleDelete,handlePosts };
+module.exports = { handleUpdate, handleDelete, handlePosts };
