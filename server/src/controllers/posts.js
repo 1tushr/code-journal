@@ -46,7 +46,7 @@ async function handleBlogUpdate(req, res) {
   try {
     const { title, desc, photo } = req.body;
     const blogId = req.query._id;
-    console.log ("blogid", blogId);
+    console.log("blogid", blogId);
     const existingBlog = await Post.findOne({ _id: blogId });
 
     if (!existingBlog) {
@@ -57,7 +57,7 @@ async function handleBlogUpdate(req, res) {
       return res.status(403).json({ message: "Permission denied" });
     }
 
-    // checking if the params have the required fields and if not keep the defualt values  
+    // checking if the params have the required fields and if not keep the defualt values
 
     if (title !== undefined) {
       existingBlog.title = title;
@@ -82,4 +82,30 @@ async function handleBlogUpdate(req, res) {
   }
 }
 
-module.exports = { handleBlogPost, handleBlogUpdate };
+async function handleBlogDelete(req, res) {
+  try {
+    const blogId = req.query._id;
+    if (!blogId) {
+      return res.status(404).json({ message: "Blog ID not provided" });
+    }
+
+    const deletedBlog = await Post.findByIdAndDelete(blogId);
+
+    if (!deletedBlog) {
+      return res.status(404).json({ message: "Blog not found for deletion" });
+    }
+
+    console.log("Deleted blog", deletedBlog);
+
+    res.status(200).json({
+      message: "Blog deleted successfully",
+      deletedBlog,
+    });
+  } catch (error) {
+    console.log("Failed to delete the blog", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+
+module.exports = { handleBlogPost, handleBlogUpdate, handleBlogDelete };

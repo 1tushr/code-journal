@@ -13,13 +13,13 @@ const isVerified = (req, res, next) => {
     } else {
       res.status(401).send({
         status: 401,
-        message: "User not authenticated, please login.",
+        message: "Invalid token, please login.",
       });
     }
   } catch (error) {
     res.status(401).send({
       status: 401,
-      message: "Invalid token, please login.",
+      message: "User not authenticated, please login.",
     });
   }
 };
