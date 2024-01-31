@@ -20,35 +20,13 @@ async function handleBlogPost(req, res) {
     res.status(500).json({ message: "Internal server error" });
   }
 }
-
-async function handleBlogPost(req, res) {
-  try {
-    const { title, desc, photo, comments } = req.body;
-
-    const newBlog = await Post.create({
-      title,
-      desc,
-      authorId: req.locals.user.id,
-      photo,
-      username: req.locals.user.username,
-      comments,
-    });
-
-    console.log("Post created successfully");
-    res.json(newBlog);
-  } catch (error) {
-    console.error("Failed to create blog:", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-}
-
-async function handleBlogUpdate(req, res) {
+ async function handleBlogUpdate(req, res) {
   try {
     const { title, desc, photo } = req.body;
     const blogId = req.query._id;
     console.log("blogid", blogId);
     const existingBlog = await Post.findOne({ _id: blogId });
-
+    
     if (!existingBlog) {
       return res.status(404).json({ message: "Blog Post not found" });
     }
