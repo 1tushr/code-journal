@@ -3,12 +3,11 @@ const mongoose = require("mongoose");
 const commentSchema = new mongoose.Schema(
   {
     comment: {
-      type: String,
+      type: String ,
       required: true,
     },
     author: {
       type: String,
-      ref: "User",
       required: true,
     },
     postId: {
@@ -22,8 +21,8 @@ const commentSchema = new mongoose.Schema(
       required: false,
     },
   },
-  { timestamps: true }
+  { timestamps: true, strictPopulate: false }
 );
 
-const Comment = new mongoose.model("Comment", commentSchema);
+const Comment = mongoose.model("Comment", commentSchema);
 module.exports = Comment;

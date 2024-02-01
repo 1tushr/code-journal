@@ -2,7 +2,7 @@ const Post = require("../models/posts");
 
 async function handleBlogPost(req, res) {
   try {
-    const { title, desc, photo, comments } = req.body;
+    const { title, desc, photo } = req.body;
 
     const newBlog = await Post.create({
       title,
@@ -10,7 +10,7 @@ async function handleBlogPost(req, res) {
       authorId: req.locals.user.id,
       photo,
       username: req.locals.user.username,
-      comments,
+     
     });
 
     console.log("Post created successfully");
@@ -20,13 +20,13 @@ async function handleBlogPost(req, res) {
     res.status(500).json({ message: "Internal server error" });
   }
 }
- async function handleBlogUpdate(req, res) {
+async function handleBlogUpdate(req, res) {
   try {
     const { title, desc, photo } = req.body;
     const blogId = req.query._id;
     console.log("blogid", blogId);
     const existingBlog = await Post.findOne({ _id: blogId });
-    
+
     if (!existingBlog) {
       return res.status(404).json({ message: "Blog Post not found" });
     }
@@ -85,5 +85,5 @@ async function handleBlogDelete(req, res) {
   }
 }
 
-
+async function handleGetPost(req, res) {}
 module.exports = { handleBlogPost, handleBlogUpdate, handleBlogDelete };

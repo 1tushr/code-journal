@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 app.use(express.json());
 app.use(cookieParser());
 const { authRouter, userRouter, postRouter } = require("./src/routes/index");
+const commentRouter = require("./src/routes/comments");
 
 mongoose
   .connect(process.env.CONNECTION_STRING)
@@ -27,3 +28,4 @@ app.use("/user/update", userRouter);
 app.use("/user/delete", userRouter);
 app.use("/new/post", postRouter);
 app.use("/delete/post", postRouter);
+app.use("/comments/",commentRouter)

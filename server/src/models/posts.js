@@ -19,23 +19,20 @@ const postSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-
     username: {
       type: String,
       ref: "User",
       required: true,
     },
-
     comments: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Array,
         ref: "Comment",
-        required: false,
       },
     ],
   },
   { timestamps: true }
 );
 
-const Post = new mongoose.model("Post", postSchema);
+const Post = mongoose.model("Post", postSchema);
 module.exports = Post;
