@@ -47,8 +47,8 @@ async function handleDelete(req, res) {
     ) {
       return res.status(400).json({ error: "Email or password doesn't match" });
     }
-    await Comment.deleteMany({ user: userFound_id });
-    await Post.deleteMany({ user: userFound_id });
+    await Comment.deleteMany({ user: userFound._id });
+    await Post.deleteMany({ user: userFound._id });
     const deletedUser = await User.findOneAndDelete({ email: req.body.email });
 
     res.json({
@@ -63,11 +63,11 @@ async function handleDelete(req, res) {
 
 async function handlePosts(req, res) {
   try {
-    const posts = await Post.find().populate("author.id comments");
+    const posts = await Post.find().populate("Comment")
     res.json({ posts });
   } catch (error) {
     console.error("error in retrieving posts:", error);
-    res.status(500).json({ error: "Interna server error " });
+    res.status(500).json({ error: "Internal server error " });
   }
 }
 

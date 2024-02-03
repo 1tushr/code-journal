@@ -101,5 +101,26 @@ async function handleBlogDelete(req, res) {
     res.status(500).json({ error: "Internal server error" });
   }
 }
-async function handleGetPost(req, res) {}
-module.exports = { handleBlogPost, handleBlogUpdate, handleBlogDelete };
+async function handleGetPost(req, res) {
+  // send the username of the user and fetch all the posts regarding it
+  try {
+    const allPosts = await Post.find();
+    if (!allPosts) {
+      console.error("Blogs doesn't exist");
+      res.status(400).json({ message: "Blogs doesn't exist" });
+    }
+    res.status(200).json({
+      message: "Fetch success",
+      allPosts,
+    });
+  } catch (error) {
+    console.error("Failed to fetch the blogs", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+module.exports = {
+  handleBlogPost,
+  handleBlogUpdate,
+  handleBlogDelete,
+  handleGetPost,
+};

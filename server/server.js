@@ -23,9 +23,8 @@ mongoose
     process.exit(1);
   });
 
-app.use("/user/auth", authRouter);
-app.use("/user/update", userRouter);
-app.use("/user/delete", userRouter);
-app.use("/new/post", postRouter);
-app.use("/delete/post", postRouter);
-app.use("/comments/",commentRouter)
+app
+  .use("/user/auth", authRouter)
+  .use("/user", userRouter)
+  .use("/post", postRouter)
+  .use("/comments", commentRouter);

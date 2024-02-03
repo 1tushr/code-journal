@@ -6,7 +6,7 @@ async function getCommentById(req, res) {
   try {
     const commentId = req.query._id;
     console.log("comment id ", commentId);
-    const comment = await Comment.findById(commentId).populate("postId ");
+    const comment = await Comment.findById(commentId).populate("postId");
 
     if (!comment) {
       console.log("Comment not found");

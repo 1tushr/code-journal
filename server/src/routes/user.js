@@ -1,16 +1,12 @@
 const express = require("express");
 const userRouter = express.Router();
 
-const  {handleUpdate, handleDelete,handlePosts}  = require("../controllers/user");
+const {handleUpdate, handleDelete, handlePosts,} = require("../controllers/user");
 
-//UPDATE
-userRouter.put("/password", handleUpdate );
+userRouter
 
-//DELETE
-userRouter.delete("/userdata",handleDelete);
-
-//GET USER
-
-userRouter.get("/posts", handlePosts);
+  .put("/password", handleUpdate) // update user password
+  .delete("/userdata", handleDelete) // delete user completey
+  .get("/posts", handlePosts); //get all posts of user along with comments
 
 module.exports = userRouter;
