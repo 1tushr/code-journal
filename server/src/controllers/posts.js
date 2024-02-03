@@ -1,5 +1,5 @@
 const Post = require("../models/posts");
-
+const mongoose = require("mongoose");
 async function handleBlogPost(req, res) {
   try {
     const { title, desc, photo } = req.body;
@@ -10,7 +10,6 @@ async function handleBlogPost(req, res) {
       authorId: req.locals.user.id,
       photo,
       username: req.locals.user.username,
-     
     });
 
     console.log("Post created successfully");
@@ -62,28 +61,45 @@ async function handleBlogUpdate(req, res) {
 
 async function handleBlogDelete(req, res) {
   try {
+    // Input validation
     const blogId = req.query._id;
     if (!blogId) {
-      return res.status(404).json({ message: "Blog ID not provided" });
+      return res.status(400).json({ error: "Blog ID not provided" });
     }
 
+    // Fetch the existing blog
+    const existingBlog = await Post.findById(blogId);
+
+    // Check if the blog post exists
+    if (!existingBlog) {
+      return res.status(404).json({ error: "Blog Post not found" });
+    }
+
+    // Authorization check
+    const userId = new mongoose.Types.ObjectId(req.locals.user.id);
+    if (!existingBlog.authorId.equals(userId)) {
+      return res.status(403).json({ error: "Permission denied" });
+    }
+
+    // Delete the blog post
     const deletedBlog = await Post.findByIdAndDelete(blogId);
 
+    // Check if the blog was found and deleted
     if (!deletedBlog) {
-      return res.status(404).json({ message: "Blog not found for deletion" });
+      return res.status(404).json({ error: "Blog not found for deletion" });
     }
 
+    // Log and respond with success message
     console.log("Deleted blog", deletedBlog);
-
     res.status(200).json({
       message: "Blog deleted successfully",
       deletedBlog,
     });
   } catch (error) {
-    console.log("Failed to delete the blog", error);
-    res.status(500).json({ message: "Internal server error" });
+    // Log the error and respond with an internal server error
+    console.error("Failed to delete the blog", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 }
-
 async function handleGetPost(req, res) {}
 module.exports = { handleBlogPost, handleBlogUpdate, handleBlogDelete };
