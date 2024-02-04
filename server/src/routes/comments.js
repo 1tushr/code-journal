@@ -1,4 +1,9 @@
-const {getCommentById, postComment, updateComment, deleteComment,} = require("../controllers/comments");
+const {
+  getCommentById,
+  postComment,
+  updateComment,
+  deleteComment,
+} = require("../controllers/comments");
 
 const isVerified = require("../middlewares/isVerified");
 const commentRouter = require("express").Router();

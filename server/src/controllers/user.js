@@ -63,7 +63,7 @@ async function handleDelete(req, res) {
 
 async function handlePosts(req, res) {
   try {
-    const posts = await Post.find().populate("Comment")
+    const posts = await Post.find().populate("Comment");
     res.json({ posts });
   } catch (error) {
     console.error("error in retrieving posts:", error);
